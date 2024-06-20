@@ -1,10 +1,9 @@
-import { Outlet } from "react-router-dom";
+import Header from "@/components/Header";
 
 export default function Index() {
   return (
     <>
-      <div>公共部分</div>
-      <Outlet></Outlet>
+      <Header />
     </>
   );
 }

@@ -4,40 +4,24 @@ import {
   LockOutlined,
   UserOutlined,
 } from "@ant-design/icons";
-import { Button, Form, Input } from "antd";
+import { Button, Form, Input, message } from "antd";
 import { useForm } from "antd/es/form/Form";
 import { useContext } from "react";
 import { TabContext } from "@/contexts/TabContextProvide";
-import moment from "moment";
-import store from "@/stores";
+import { fetchLogin } from "@/apis/user";
 
 export default function Login() {
   const [loginForm] = useForm();
   const { setTabKey, setOpen } = useContext(TabContext);
-  // const { mutateAsync: login, isLoading } = useFetchLogin();
-  // const { mutateAsync: getSalt } = fetchSalt();
+  const { mutateAsync } = fetchLogin();
   const handleLogin = async () => {
     const { password, username } = loginForm.getFieldsValue([
       "username",
       "password",
     ]);
-    // 加第二次盐，从数据库获取
-    // const { salt } = await getSalt({ qq: username, isCreate: false });
-    // const pass = await passEncipherTwo(password, username, salt);
-    // const res = await login({ qq: username, pass });
-    // if (res.isLogin) {
-    //   // 登录成功
-    //   setToken(() => res.token);
-    //   setOpen(false);
-    //   setUserInfo({
-    //     ...res.userInfo,
-    //     registerDays: moment().diff(Number(res.userInfo.registerDate), "days"),
-    //   });
-    //   localStorage.setItem("BLOG_TOKEN", res.token);
-    //   const resUnreadCount = await mutateAsync({ qq: username });
-    //   store.message.unreadAllCount = resUnreadCount.unreadCount;
-    //   setIsLogin(true);
-    // }
+    await mutateAsync({ username, password });
+    message.success("登录成功");
+    setOpen(false);
   };
   return (
     <Form
@@ -50,11 +34,7 @@ export default function Login() {
       <Form.Item
         name="username"
         label="账号"
-        rules={[
-          { required: true, message: "请输入账号" },
-          { max: 12, message: "请输入合法的账号" },
-          { min: 6, message: "请输入合法的账号" },
-        ]}
+        rules={[{ required: true, message: "请输入账号" }]}
         colon
       >
         <Input

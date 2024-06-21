@@ -1,85 +1,35 @@
-import { useState, useRef, useEffect, useContext, useMemo } from "react";
+import { useContext } from "react";
 import {
   EyeInvisibleOutlined,
   EyeTwoTone,
   KeyOutlined,
   LockOutlined,
   QqOutlined,
+  UserOutlined,
 } from "@ant-design/icons";
-import { Button, Form, Input, message } from "antd";
+import { Button, Form, Input, Radio, message } from "antd";
 import Password from "antd/es/input/Password";
 import { useForm } from "antd/es/form/Form";
 import { TabContext } from "@/contexts/TabContextProvide";
+import { fetchRegister } from "@/apis/user";
 
 export default function Register() {
   const [registerForm] = useForm();
-  const [isDisabledCodeBtn, setIDisabledCodeBtn] = useState<boolean>(false);
-  const [countDown, setCountDown] = useState<number>(60);
-  const timer = useRef<any>(null);
-  const { setTabKey, tabKey } = useContext(TabContext);
-  const isForget = useMemo(() => tabKey === "forget", [tabKey]);
-
-  const checkCodeBtn = async (e: any) => {
-    e.preventDefault();
-    let isQQCheckSuccess = false;
-    await registerForm.validateFields(["qq"]).then(() => {
-      isQQCheckSuccess = true;
-      return;
-    });
-    if (!isQQCheckSuccess) {
-      return;
-    }
-    if (isDisabledCodeBtn) {
-      message.warning("稍后重试");
-      return;
-    }
-    // const codeRes = await getCode({ qq: registerForm.getFieldValue("qq") });
-    // if (codeRes?.isQQError) {
-    //   return;
-    // }
-    setIDisabledCodeBtn(true);
-    clearInterval(timer.current);
-    timer.current = setInterval(() => {
-      setCountDown((countDown) => countDown - 1);
-    }, 1000);
-  };
-  useEffect(() => {
-    return () => clearInterval(timer.current);
-  }, []);
-
-  useEffect(() => {
-    if (countDown < 1) {
-      setCountDown(60);
-      setIDisabledCodeBtn(false);
-      clearInterval(timer.current);
-    }
-  }, [countDown]);
+  const { setTabKey } = useContext(TabContext);
+  const { mutateAsync } = fetchRegister();
 
   const onFinish = async () => {
-    // const { qq, code, password } = registerForm.getFieldsValue([
-    //   "qq",
-    //   "code",
-    //   "password",
-    // ]);
-    // 从数据库获取第二次盐值
-    // const { salt } = await getSalt({ qq, isCreate: !isForget });
-    // const pass = await passEncipherTwo(password, qq, salt);
-
-    if (isForget) {
-      // 找回
-      // const res = await forget({ qq, code, pass });
-      // if (res?.isShowMessage) {
-      //   // 找回成功
-      //   setTabKey("login");
-      // }
-    } else {
-      // 注册
-      // 对密码进行加密
-      // const res = await register({ qq, code, pass });
-      // if (res?.isShowMessage) {
-      //   setTabKey("login");
-      // }
-    }
+    const { username, name, phone, password, gender } =
+      registerForm.getFieldsValue();
+    await mutateAsync({
+      username,
+      name,
+      phone,
+      password,
+      gender,
+    });
+    message.success("注册成功");
+    setTabKey("login");
   };
 
   return (
@@ -90,46 +40,40 @@ export default function Register() {
         className="w-full"
         form={registerForm}
         onFinish={onFinish}
+        initialValues={{ gender: "1" }}
       >
         <Form.Item
-          name="qq"
-          label="QQ"
-          rules={[
-            { required: true, message: "请输入QQ" },
-            { max: 12, message: "请输入合法的QQ" },
-            { min: 6, message: "请输入合法的QQ" },
-          ]}
+          name="username"
+          label="账号"
+          rules={[{ required: true, message: "请输入账号" }]}
         >
-          <Input
-            type="Number"
-            placeholder="QQ号"
-            prefix={<QqOutlined />}
-            addonAfter={<span>@qq.com</span>}
-          />
+          <Input placeholder="账号" prefix={<UserOutlined />} />
         </Form.Item>
         <Form.Item
-          name="code"
-          label="Code"
+          name="name"
+          label="昵称"
+          rules={[{ required: true, message: "请输入昵称" }]}
+        >
+          <Input placeholder="昵称" prefix={<QqOutlined />} />
+        </Form.Item>
+        <Form.Item
+          name="phone"
+          label="手机号码"
           rules={[
-            { required: true, message: "请输入验证码" },
-            { max: 6, message: "请输入6位验证码" },
-            { min: 6, message: "请输入6位验证码" },
+            { required: true, message: "请收入手机号码" },
+            { max: 11, message: "请输入正确的手机号码" },
+            { min: 11, message: "请输入正确的手机号码" },
           ]}
         >
           <Input
             type="Number"
-            placeholder="验证码"
+            placeholder="手机号码"
             prefix={<KeyOutlined />}
-            addonAfter={
-              <a onClick={checkCodeBtn}>
-                {isDisabledCodeBtn ? `${countDown}秒后再重试` : "发送验证码"}
-              </a>
-            }
           />
         </Form.Item>
         <Form.Item
           name="password"
-          label="Pass"
+          label="密码"
           rules={[
             { required: true, message: "请输入密码" },
             { max: 16, message: "密码最长16位" },
@@ -140,7 +84,7 @@ export default function Register() {
           <Password
             type="password"
             prefix={<LockOutlined />}
-            placeholder={`请输入${isForget ? "新" : ""}密码`}
+            placeholder={`请输入密码`}
             iconRender={(visible) =>
               visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
             }
@@ -148,7 +92,7 @@ export default function Register() {
         </Form.Item>
         <Form.Item
           name="confirmPassword"
-          label="Confirm"
+          label="确认密码"
           dependencies={["password"]}
           rules={[
             { required: true, message: "请再次输入密码" },
@@ -166,15 +110,26 @@ export default function Register() {
           <Password
             type="password"
             prefix={<LockOutlined />}
-            placeholder={`请再次输入${isForget ? "新" : ""}密码`}
+            placeholder={`请再次输入密码`}
             iconRender={(visible) =>
               visible ? <EyeTwoTone /> : <EyeInvisibleOutlined />
             }
           />
         </Form.Item>
+        <Form.Item
+          name={"gender"}
+          label="性别"
+          colon
+          rules={[{ required: true }]}
+        >
+          <Radio.Group defaultValue={"1"}>
+            <Radio value="1">男</Radio>
+            <Radio value="0">女</Radio>
+          </Radio.Group>
+        </Form.Item>
         <Form.Item className="text-center" label="">
           <Button type="primary" htmlType="submit" className="w-full">
-            {isForget ? "找回密码" : "注册"}
+            注册
           </Button>
         </Form.Item>
       </Form>

@@ -31,10 +31,10 @@ httpInstance.interceptors.response.use(
   }
 );
 
-export function get<T>(url: string, data?: any): T {
-  return httpInstance.get<T>(url, data) as T;
+export function get<T>(url: string, data?: any): any {
+  return httpInstance.get<T>(url, { params: data }) as T;
 }
 
-export function post<T>(url: string, data?: any): T {
+export function post<T>(url: string, data?: any): any {
   return httpInstance.post<T>(url, data) as T;
 }

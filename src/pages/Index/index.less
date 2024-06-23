@@ -1,4 +1,4 @@
-ul li {
+.item-type li {
   box-sizing: border-box;
   position: relative;
   width: 200px;
@@ -25,4 +25,31 @@ ul li {
 
 ul {
   padding-left: 0;
+}
+
+.discuss-type li {
+  height: 30px;
+  line-height: 30px;
+  position: relative;
+  color: #1677ff;
+  &:hover {
+    text-decoration: underline;
+  }
+  span {
+    position: absolute;
+    right: 6px;
+    color: red;
+    font-size: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+
+.tcm-item,
+.prescription-item {
+  transition: all 0.3s linear;
+  &:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  }
 }

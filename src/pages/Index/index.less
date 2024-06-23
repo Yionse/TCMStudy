@@ -1,0 +1,28 @@
+ul li {
+  box-sizing: border-box;
+  position: relative;
+  width: 200px;
+  height: 50px;
+  line-height: 50px;
+  transition: all 0.3s linear;
+  border-bottom: 1px solid transparent;
+  &:hover {
+    background-color: #faf5e4;
+    color: blue;
+    border-bottom: 2px solid #ccc;
+  }
+  &::after {
+    content: ">";
+    display: block;
+    position: absolute;
+    top: 0;
+    right: 10%;
+  }
+  span {
+    padding-left: 20px;
+  }
+}
+
+ul {
+  padding-left: 0;
+}

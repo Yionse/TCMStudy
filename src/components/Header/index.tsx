@@ -11,12 +11,7 @@ export default function Header() {
   const { tabKey, setTabKey, open, setOpen } = useContext(TabContext);
   const { NodeModel } = useLogin({ tabKey, setTabKey, open, setOpen });
   return (
-    <div
-      className="w-4/5 mx-auto flex justify-between items-center py-1 px-4"
-      style={{
-        boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
-      }}
-    >
+    <div className="w-4/5 mx-auto flex justify-between items-center py-1 px-4 box-border box-shadow">
       <img src={logo} className="w-20 h-20 rounded-full" />
       <Search
         className="w-2/5"

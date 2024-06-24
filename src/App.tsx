@@ -8,6 +8,7 @@ import FamousDoctor from "./pages/famousDoctor";
 import PrescriptionPage from "./pages/prescription";
 import SymptomPage from "./pages/symptom";
 import DiscussPage from "./pages/discuss";
+import Home from "./pages/home";
 
 export default function App() {
   return (
@@ -15,12 +16,14 @@ export default function App() {
       <TabContextProvide>
         <BrowserRouter>
           <Routes>
-            <Route index path="/" element={<Index />} />
-            <Route path="tcm" element={<TCM />} />
-            <Route path="doctor" element={<FamousDoctor />} />
-            <Route path="prescription" element={<PrescriptionPage />} />
-            <Route path="symptom" element={<SymptomPage />} />
-            <Route path="discuss" element={<DiscussPage />} />
+            <Route path="/" element={<Index />}>
+              <Route index path="home" element={<Home />} />
+              <Route path="tcm" element={<TCM />} />
+              <Route path="doctor" element={<FamousDoctor />} />
+              <Route path="prescription" element={<PrescriptionPage />} />
+              <Route path="symptom" element={<SymptomPage />} />
+              <Route path="discuss" element={<DiscussPage />} />
+            </Route>
             <Route path="*" element={<div>页面飞走了</div>} />
           </Routes>
         </BrowserRouter>

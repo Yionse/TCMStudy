@@ -38,6 +38,7 @@ export default function Home() {
           <Carousel autoplay>
             <div>
               <h3 style={contentStyle}>1</h3>
+              <img src="http://localhost:8080/SSM/image?fileName=renshen.jpg" />
             </div>
             <div>
               <h3 style={contentStyle}>2</h3>

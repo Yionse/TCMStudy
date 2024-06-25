@@ -9,24 +9,27 @@ import PrescriptionPage from "./pages/prescription";
 import SymptomPage from "./pages/symptom";
 import DiscussPage from "./pages/discuss";
 import Home from "./pages/home";
+import { UserInfoProvider } from "./contexts/UserInfo";
 
 export default function App() {
   return (
     <Provider store={stores}>
       <TabContextProvide>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />}>
-              <Route index path="home" element={<Home />} />
-              <Route path="tcm" element={<TCM />} />
-              <Route path="doctor" element={<FamousDoctor />} />
-              <Route path="prescription" element={<PrescriptionPage />} />
-              <Route path="symptom" element={<SymptomPage />} />
-              <Route path="discuss" element={<DiscussPage />} />
-            </Route>
-            <Route path="*" element={<div>页面飞走了</div>} />
-          </Routes>
-        </BrowserRouter>
+        <UserInfoProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />}>
+                <Route index element={<Home />} />
+                <Route path="tcm" element={<TCM />} />
+                <Route path="doctor" element={<FamousDoctor />} />
+                <Route path="prescription" element={<PrescriptionPage />} />
+                <Route path="symptom" element={<SymptomPage />} />
+                <Route path="discuss" element={<DiscussPage />} />
+              </Route>
+              <Route path="*" element={<div>页面飞走了</div>} />
+            </Routes>
+          </BrowserRouter>
+        </UserInfoProvider>
       </TabContextProvide>
     </Provider>
   );

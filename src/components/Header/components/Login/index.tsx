@@ -37,11 +37,7 @@ export default function Login() {
         rules={[{ required: true, message: "请输入账号" }]}
         colon
       >
-        <Input
-          type="number"
-          prefix={<UserOutlined />}
-          placeholder="请使用账号登录"
-        />
+        <Input prefix={<UserOutlined />} placeholder="请使用账号登录" />
       </Form.Item>
       <Form.Item
         name="password"

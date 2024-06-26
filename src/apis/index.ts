@@ -22,7 +22,7 @@ httpInstance.interceptors.request.use(
 
 httpInstance.interceptors.response.use(
   (result) => {
-    return result.data;
+    return result.data.data;
   },
   (error) => {
     // message.error("网络错误！");

@@ -7,7 +7,7 @@ import {
   EyeOutlined,
   CloudDownloadOutlined,
 } from "@ant-design/icons";
-import { Carousel } from "antd";
+import { Carousel, message } from "antd";
 import {
   getFamousDoctorList,
   getList,
@@ -16,6 +16,8 @@ import {
   getTCMList,
 } from "@/apis/list";
 import { useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import { UserInfoContext } from "@/contexts/UserInfo";
 
 export default function Home() {
   const contentStyle: React.CSSProperties = {
@@ -32,7 +34,7 @@ export default function Home() {
   const { data: prescriptionList } = getPrescriptionList();
   const { data: symptomList } = getSymptomList();
   const { data: postsList } = getList();
-
+  const { isLoggedIn } = useContext(UserInfoContext);
   return (
     <>
       <div
@@ -187,7 +189,14 @@ export default function Home() {
             <SolutionOutlined />
             <span>讨论区</span>
           </li>
-          <li>
+          <li
+            onClick={() => {
+              if (isLoggedIn) {
+              } else {
+                message.error("请先登录");
+              }
+            }}
+          >
             <CloudDownloadOutlined />
             <span>下载专区</span>
           </li>

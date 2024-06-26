@@ -40,3 +40,7 @@ export function getSymptomDetail(id: number) {
 export function getList() {
   return useQuery(["posts"], async () => get("/SSM/posts/list"));
 }
+
+export function getPostDetail(id: number) {
+  return useQuery(["post-detail"], async () => get("/SSM/posts/id", { id }));
+}

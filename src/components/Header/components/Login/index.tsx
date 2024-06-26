@@ -9,19 +9,25 @@ import { useForm } from "antd/es/form/Form";
 import { useContext } from "react";
 import { TabContext } from "@/contexts/TabContextProvide";
 import { fetchLogin } from "@/apis/user";
+import { UserInfoContext } from "@/contexts/UserInfo";
 
 export default function Login() {
   const [loginForm] = useForm();
   const { setTabKey, setOpen } = useContext(TabContext);
+  const { setIsLoggedIn, setUserInfo } = useContext(UserInfoContext);
   const { mutateAsync } = fetchLogin();
   const handleLogin = async () => {
     const { password, username } = loginForm.getFieldsValue([
       "username",
       "password",
     ]);
-    await mutateAsync({ username, password });
-    message.success("登录成功");
-    setOpen(false);
+    const res = await mutateAsync({ username, password });
+    if (res) {
+      setOpen(false);
+      message.success("登录成功");
+      setIsLoggedIn(true);
+      setUserInfo(res);
+    }
   };
   return (
     <Form

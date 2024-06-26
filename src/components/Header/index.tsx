@@ -1,15 +1,17 @@
 import logo from "@/assets/logo.png";
-import { Button, Input } from "antd";
+import { Button, Input, Space, message } from "antd";
 import Search from "antd/es/input/Search";
 import { SearchOutlined } from "@ant-design/icons";
 import { useLogin } from "@/hooks/useLogin";
 import { useContext } from "react";
 import { TabContext } from "@/contexts/TabContextProvide";
+import { UserInfoContext } from "@/contexts/UserInfo";
 
 export default function Header() {
   const onSearch = (value: string) => {};
   const { tabKey, setTabKey, open, setOpen } = useContext(TabContext);
   const { NodeModel } = useLogin({ tabKey, setTabKey, open, setOpen });
+  const { isLoggedIn, userInfo } = useContext(UserInfoContext);
   return (
     <div className="w-4/5 mx-auto flex justify-between items-center py-1 px-4 box-border box-shadow">
       <img src={logo} className="w-20 h-20 rounded-full" />
@@ -28,9 +30,40 @@ export default function Header() {
         }
         onSearch={onSearch}
       />
-      <Button type="primary" onClick={() => setOpen(true)}>
-        登录
-      </Button>
+      <Space className="ml-auto">
+        <div className="">
+          <Button
+            type="link"
+            onClick={() => {
+              if (!isLoggedIn) {
+                message.error("请先登录！");
+              } else {
+              }
+            }}
+          >
+            资源下载
+          </Button>
+          <Button
+            type="link"
+            onClick={() => {
+              if (!isLoggedIn) {
+                message.error("请先登录！");
+              } else {
+              }
+            }}
+          >
+            学习计划
+          </Button>
+        </div>
+        {isLoggedIn ? (
+          `Hi, ${userInfo.name}`
+        ) : (
+          <Button type="primary" onClick={() => setOpen(true)}>
+            登录
+          </Button>
+        )}
+        {isLoggedIn && <Button type="link">个人中心</Button>}
+      </Space>
       {NodeModel}
     </div>
   );

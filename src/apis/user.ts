@@ -12,3 +12,7 @@ export function fetchLogin() {
 export function getUserInfo(id: number) {
   return useQuery(["userInfo", id], async () => get("/SSM/user/id", { id }));
 }
+
+export function fetchUpdateUserInfo() {
+  return useMutation(async (data: any) => post("/SSM/user/update", data));
+}

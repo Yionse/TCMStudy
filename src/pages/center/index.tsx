@@ -1,4 +1,4 @@
-import { getUserInfo } from "@/apis/user";
+import { fetchUpdateUserInfo, getUserInfo } from "@/apis/user";
 import { UserInfoContext } from "@/contexts/UserInfo";
 import { Button, Form, Input, Radio, Switch, Tabs, message } from "antd";
 import { useForm } from "antd/es/form/Form";
@@ -36,18 +36,29 @@ export default function Center() {
 }
 
 function UserInfo() {
-  const { userInfo } = useContext(UserInfoContext);
+  const { userInfo, setUserInfo } = useContext(UserInfoContext);
   const { data } = getUserInfo(userInfo?.id);
   const [form] = useForm();
   const [isEdit, setIsEdit] = useState(true);
+  const { mutateAsync } = fetchUpdateUserInfo();
   const navigate = useNavigate();
-  // useEffect(() => {
-  //   if (!userInfo?.id) {
-  //     message.error("请先登录！");
-  //     navigate("/");
-  //   }
-  // }, []);
-  console.log(data);
+  useEffect(() => {
+    if (!userInfo?.id) {
+      message.error("请先登录！");
+      navigate("/");
+    }
+  }, []);
+  const submitHandle = async () => {
+    const values = await form.validateFields();
+    await mutateAsync({ id: userInfo?.id, ...values });
+    setIsEdit(true);
+    message.success("修改成功！");
+    setUserInfo({ ...userInfo, ...values });
+    form.setFieldsValue(values);
+  };
+  useEffect(() => {
+    form.setFieldsValue(data);
+  }, [data]);
 
   return (
     <>
@@ -106,7 +117,9 @@ function UserInfo() {
             编辑
           </Button>
         ) : (
-          <Button type="primary">提交</Button>
+          <Button type="primary" onClick={submitHandle}>
+            提交
+          </Button>
         )}
       </div>
     </>

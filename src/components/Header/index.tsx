@@ -58,7 +58,7 @@ export default function Header() {
           </Button>
         </div>
         {isLoggedIn ? (
-          `Hi, ${userInfo.name}`
+          `Hi, ${userInfo.username}`
         ) : (
           <Button type="primary" onClick={() => setOpen(true)}>
             登录

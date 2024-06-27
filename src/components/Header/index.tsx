@@ -6,12 +6,14 @@ import { useLogin } from "@/hooks/useLogin";
 import { useContext } from "react";
 import { TabContext } from "@/contexts/TabContextProvide";
 import { UserInfoContext } from "@/contexts/UserInfo";
+import { useNavigate } from "react-router-dom";
 
 export default function Header() {
   const onSearch = (value: string) => {};
   const { tabKey, setTabKey, open, setOpen } = useContext(TabContext);
   const { NodeModel } = useLogin({ tabKey, setTabKey, open, setOpen });
   const { isLoggedIn, userInfo } = useContext(UserInfoContext);
+  const navigator = useNavigate();
   return (
     <div className="w-4/5 mx-auto flex justify-between items-center py-1 px-4 box-border box-shadow">
       <img src={logo} className="w-20 h-20 rounded-full" />
@@ -62,7 +64,11 @@ export default function Header() {
             登录
           </Button>
         )}
-        {isLoggedIn && <Button type="link">个人中心</Button>}
+        {isLoggedIn && (
+          <Button type="link" onClick={() => navigator("/center")}>
+            个人中心
+          </Button>
+        )}
       </Space>
       {NodeModel}
     </div>

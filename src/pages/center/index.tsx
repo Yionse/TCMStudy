@@ -2,6 +2,7 @@ import {
   fetchAddTask,
   fetchDeletePost,
   getPersonalPosts,
+  getStudyRecord,
   getStudyTaskList,
 } from "@/apis/operator";
 import { fetchUpdateUserInfo, getUserInfo } from "@/apis/user";
@@ -21,7 +22,6 @@ import { useForm } from "antd/es/form/Form";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { EyeOutlined, MessageOutlined } from "@ant-design/icons";
-import moment from "moment";
 import dayjs from "dayjs";
 
 export default function Center() {
@@ -42,6 +42,11 @@ export default function Center() {
       key: "task",
       label: "学习计划",
       children: <Task />,
+    },
+    {
+      key: "record",
+      label: "学习记录",
+      children: <Records />,
     },
   ];
   useEffect(() => {
@@ -103,14 +108,14 @@ function UserInfo() {
         >
           <Form.Item
             name={"name"}
-            label="账号"
+            label="昵称"
             rules={[{ required: true, message: "请输入账号！" }]}
           >
             <Input />
           </Form.Item>
           <Form.Item
             name={"username"}
-            label="昵称"
+            label="账号"
             rules={[{ required: true, message: "请输入昵称！" }]}
           >
             <Input />
@@ -362,6 +367,49 @@ function Task() {
           </Form.Item>
         </Form>
       </Modal>
+    </div>
+  );
+}
+
+function Records() {
+  const { userInfo } = useContext(UserInfoContext);
+  const { data } = getStudyRecord(userInfo?.id);
+  return (
+    <div>
+      {data?.length === 0 && <div className="text-center">暂无数据</div>}
+      {data?.map((item: any) => (
+        <div
+          className="flex flex-row justify-center h-32 w-full my-2 box-border"
+          style={{ border: "1px solid #ccc" }}
+        >
+          <div
+            style={{
+              width: "200px",
+              color: "white",
+              fontSize: "24px",
+              lineHeight: "128px",
+              wordSpacing: "24px",
+              textAlign: "center",
+              background: `${
+                item?.type === "方剂"
+                  ? "orange"
+                  : item?.type === "中药"
+                  ? "green"
+                  : "red"
+              }`,
+            }}
+          >
+            {item.type}
+          </div>
+          <div className="flex-1 ml-6 box-border p-4 flex flex-col justify-center">
+            <span>
+              {item.type}：{item.name}
+            </span>
+            <span>学习类型：{item?.type}</span>
+            <span>学习时间：{item?.studyDate}</span>
+          </div>
+        </div>
+      ))}
     </div>
   );
 }

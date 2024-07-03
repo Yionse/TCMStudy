@@ -74,3 +74,9 @@ export function fetchSearchSymptom() {
     get(`/SSM/Symptoms/like?like=${data}`)
   );
 }
+
+export function getStudyRecord(id: any) {
+  return useQuery(["studyRecord"], async () =>
+    get(`/SSM/studyRecords/records`, { userId: id })
+  );
+}

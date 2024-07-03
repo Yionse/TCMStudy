@@ -16,6 +16,7 @@ export default function SymptomPageDetail() {
     mutateAsync({
       type: "病症",
       userId: userInfo?.id,
+      studyId: state?.id,
     });
   }, []);
   return (

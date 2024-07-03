@@ -16,6 +16,7 @@ export default function PrescriptionPageDetail() {
     mutateAsync({
       type: "方剂",
       userId: userInfo?.id,
+      studyId: state?.id,
     });
   }, []);
   return (

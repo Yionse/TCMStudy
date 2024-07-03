@@ -14,8 +14,9 @@ export default function TcmDetail() {
       return;
     }
     mutateAsync({
-      type: "方剂",
+      type: "中药",
       userId: userInfo?.id,
+      studyId: state?.id,
     });
   }, []);
   return (

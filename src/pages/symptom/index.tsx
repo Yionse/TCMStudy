@@ -23,7 +23,9 @@ export default function SymptomPage() {
             className="rounded-xl w-1/3"
           />
           <div className="box-border pl-8 w-2/3">
-            <p>病症名称：{item?.name}</p>
+            <p>
+              病症名称：<span style={{ color: "#96ca59" }}>{item?.name}</span>
+            </p>
             <p>病因：{item?.etiology.slice(0, 60) + "..."}</p>
           </div>
         </div>

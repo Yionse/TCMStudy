@@ -154,10 +154,15 @@ export default function Home() {
           <div>
             <ul className="p-2 m-0 discuss-type">
               {postsList?.slice(0, 5).map((item: any, index: number) => (
-                <li>
+                <li
+                  onClick={() =>
+                    navigation("/discussDetail", { state: { id: item?.id } })
+                  }
+                >
                   {`${index + 1}、${item.postContent.slice(0, 20)}`}
                   <span>
                     <EyeOutlined />
+                    &nbsp;&nbsp;
                     {item.views}
                   </span>
                 </li>
@@ -209,12 +214,12 @@ export default function Home() {
         <div style={{ width: "48%" }} className="box-shadow">
           <h2
             className="pl-4 relative"
-            style={{ borderBottom: "1px solid #e6e6e6" }}
+            style={{ borderBottom: "1px solid #e6e6e6", color: "#96ca59" }}
           >
             中医药列表
             <span
               className="absolute right-2 top-0 text-base "
-              style={{ color: "blue" }}
+              style={{ color: "rgba(22, 119, 255, .6)" }}
               onClick={() => navigation("/tcm")}
             >
               查看更多
@@ -238,7 +243,7 @@ export default function Home() {
               />
               <div className="box-border pl-8 w-2/3">
                 <p>
-                  中药名：<span style={{ color: "red" }}>{item?.name}</span>
+                  中药名：<span style={{ color: "#96ca59" }}>{item?.name}</span>
                 </p>
                 <p>类型：{item?.type}</p>
                 <p>用法：{item?.function}</p>
@@ -249,12 +254,12 @@ export default function Home() {
         <div className="box-shadow" style={{ width: "48%" }}>
           <h2
             className="pl-4 relative"
-            style={{ borderBottom: "1px solid #e6e6e6" }}
+            style={{ borderBottom: "1px solid #e6e6e6", color: "#96ca59" }}
           >
             方剂列表
             <span
               className="absolute right-2 top-0 text-base "
-              style={{ color: "blue" }}
+              style={{ color: "rgba(22, 119, 255, .6)" }}
               onClick={() => navigation("/prescription")}
             >
               查看更多
@@ -280,7 +285,8 @@ export default function Home() {
               />
               <div className="box-border px-4 w-1/2">
                 <p>
-                  方剂名称：<span style={{ color: "red" }}>{item?.name}</span>
+                  方剂名称：
+                  <span style={{ color: "#96ca59" }}>{item?.name}</span>
                 </p>
                 <p>用法：{item?.usage}</p>
               </div>
@@ -288,12 +294,12 @@ export default function Home() {
           ))}
           <h2
             className="pl-4 relative"
-            style={{ borderBottom: "1px solid #e6e6e6" }}
+            style={{ borderBottom: "1px solid #e6e6e6", color: "#96ca59" }}
           >
             病症列表
             <span
               className="absolute right-2 top-0 text-base "
-              style={{ color: "blue" }}
+              style={{ color: "rgba(22, 119, 255, .6)" }}
               onClick={() => navigation("/symptom")}
             >
               查看更多
@@ -316,7 +322,10 @@ export default function Home() {
                 className="rounded-xl w-1/2"
               />
               <div className="box-border pl-8 w-1/2">
-                <p>病症名称：{item?.name}</p>
+                <p>
+                  病症名称：
+                  <span style={{ color: "#96ca59" }}>{item?.name}</span>
+                </p>
                 <p>病因：{item?.etiology.slice(0, 60) + "..."}</p>
               </div>
             </div>

@@ -21,7 +21,7 @@ export default function FamousDoctor() {
           />
           <div className="box-border px-4 w-2/3">
             <p>
-              医生姓名：<span style={{ color: "red" }}>{item?.name}</span>
+              医生姓名：<span style={{ color: "#96ca59" }}>{item?.name}</span>
             </p>
             <p>主要治疗方向：{item?.specialty}</p>
             <p>简介：{item?.briefIntro}</p>

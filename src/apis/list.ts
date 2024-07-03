@@ -42,5 +42,7 @@ export function getList() {
 }
 
 export function getPostDetail(id: number) {
-  return useQuery(["post-detail"], async () => get("/SSM/posts/id", { id }));
+  return useQuery(["post-detail"], async () =>
+    get("/SSM/posts/details", { id })
+  );
 }

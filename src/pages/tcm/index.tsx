@@ -22,7 +22,7 @@ export default function TCM() {
           />
           <div className="box-border pl-8 w-2/3">
             <p>
-              中药名：<span style={{ color: "red" }}>{item?.name}</span>
+              中药名：<span style={{ color: "#96ca59" }}>{item?.name}</span>
             </p>
             <p>类型：{item?.type}</p>
             <p>用法：{item?.function}</p>

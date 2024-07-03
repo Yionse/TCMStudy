@@ -9,14 +9,24 @@ import { UserInfoContext } from "@/contexts/UserInfo";
 import { useNavigate } from "react-router-dom";
 
 export default function Header() {
-  const onSearch = (value: string) => {};
   const { tabKey, setTabKey, open, setOpen } = useContext(TabContext);
   const { NodeModel } = useLogin({ tabKey, setTabKey, open, setOpen });
   const { isLoggedIn, userInfo } = useContext(UserInfoContext);
   const navigator = useNavigate();
+  const onSearch = (value: string) => {
+    if (value.trim() === "") {
+      message.error("请输入搜索内容！");
+      return;
+    }
+    navigator("/search", { state: { keyword: value } });
+  };
   return (
     <div className="w-4/5 mx-auto flex justify-between items-center py-1 px-4 box-border box-shadow">
-      <img src={logo} className="w-20 h-20 rounded-full" />
+      <img
+        src={logo}
+        className="w-20 h-20 rounded-full"
+        onClick={() => navigator("/")}
+      />
       <Search
         className="w-2/5"
         placeholder="请输入中药名、药方、中医名"
@@ -32,7 +42,7 @@ export default function Header() {
         }
         onSearch={onSearch}
       />
-      <Space className="ml-auto">
+      <Space>
         <div className="">
           <Button
             type="link"
@@ -40,6 +50,7 @@ export default function Header() {
               if (!isLoggedIn) {
                 message.error("请先登录！");
               } else {
+                navigator("/resource");
               }
             }}
           >
@@ -51,6 +62,7 @@ export default function Header() {
               if (!isLoggedIn) {
                 message.error("请先登录！");
               } else {
+                navigator("/center", { state: { tabKey: "task" } });
               }
             }}
           >

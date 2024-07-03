@@ -10,23 +10,31 @@ import { useContext } from "react";
 import { TabContext } from "@/contexts/TabContextProvide";
 import { fetchLogin } from "@/apis/user";
 import { UserInfoContext } from "@/contexts/UserInfo";
+import { fetchTaskList } from "@/apis/operator";
 
 export default function Login() {
   const [loginForm] = useForm();
   const { setTabKey, setOpen } = useContext(TabContext);
   const { setIsLoggedIn, setUserInfo } = useContext(UserInfoContext);
   const { mutateAsync } = fetchLogin();
+  const { mutateAsync: taskList } = fetchTaskList();
   const handleLogin = async () => {
     const { password, username } = loginForm.getFieldsValue([
       "username",
       "password",
     ]);
-    const res = await mutateAsync({ username, password });
+    const res = (await mutateAsync({ username, password })) as any;
     if (res) {
       setOpen(false);
       message.success("登录成功");
       setIsLoggedIn(true);
       setUserInfo(res);
+      const task = await taskList({ id: res?.id });
+      if (task.find((item) => item.status == 1)) {
+        message.warning("您有未完成的学习任务，请尽快完成任务");
+      }
+    } else {
+      message.error("登录失败，请检查账号密码");
     }
   };
   return (

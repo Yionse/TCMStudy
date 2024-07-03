@@ -26,7 +26,7 @@ export default function PrescriptionPage() {
           />
           <div className="box-border px-4 w-1/2">
             <p>
-              方剂名称：<span style={{ color: "red" }}>{item?.name}</span>
+              方剂名称：<span style={{ color: "#96ca59" }}>{item?.name}</span>
             </p>
             <p>用法：{item?.usage}</p>
             <p>配方：{item?.composition}</p>
